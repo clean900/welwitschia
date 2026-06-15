@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Tenant\AccountingController;
 use App\Http\Controllers\Tenant\AuthController;
+use App\Http\Controllers\Tenant\EmployeeController;
 use App\Http\Controllers\Tenant\InvoiceController;
+use App\Http\Controllers\Tenant\PayrollController;
 use App\Http\Controllers\Tenant\OnboardingController;
 use App\Http\Controllers\Tenant\TwoFactorController;
 use Illuminate\Support\Facades\Route;
@@ -69,5 +71,16 @@ Route::middleware([
         // Contabilidade (PGC Angola)
         Route::get('accounting/journal', [AccountingController::class, 'journal']);
         Route::get('accounting/trial-balance', [AccountingController::class, 'trialBalance']);
+
+        // RH / Salários
+        Route::get('employees', [EmployeeController::class, 'index']);
+        Route::post('employees', [EmployeeController::class, 'store']);
+        Route::get('employees/{employee}', [EmployeeController::class, 'show']);
+        Route::put('employees/{employee}', [EmployeeController::class, 'update']);
+        Route::delete('employees/{employee}', [EmployeeController::class, 'destroy']);
+
+        Route::get('payrolls', [PayrollController::class, 'index']);
+        Route::post('payrolls', [PayrollController::class, 'store']);
+        Route::get('payrolls/{payroll}', [PayrollController::class, 'show']);
     });
 });

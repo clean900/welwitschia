@@ -22,11 +22,15 @@ class PgcAngolaSeeder extends Seeder
         // Classe 3 — Terceiros
         ['code' => '31', 'name' => 'Clientes', 'class' => 3, 'type' => 'asset', 'normal_balance' => 'debit'],
         ['code' => '32', 'name' => 'Fornecedores', 'class' => 3, 'type' => 'liability', 'normal_balance' => 'credit'],
+        ['code' => '33', 'name' => 'Pessoal — Remunerações a Pagar', 'class' => 3, 'type' => 'liability', 'normal_balance' => 'credit'],
         ['code' => '34', 'name' => 'Estado', 'class' => 3, 'type' => 'liability', 'normal_balance' => 'credit', 'is_postable' => false],
+        ['code' => '3442', 'name' => 'Estado — IRT Retido', 'class' => 3, 'type' => 'liability', 'normal_balance' => 'credit', 'parent_code' => '34'],
         ['code' => '3443', 'name' => 'Estado — IVA Liquidado', 'class' => 3, 'type' => 'liability', 'normal_balance' => 'credit', 'parent_code' => '34'],
+        ['code' => '35', 'name' => 'Segurança Social (INSS) a Pagar', 'class' => 3, 'type' => 'liability', 'normal_balance' => 'credit'],
 
         // Classe 6 — Custos e Perdas
         ['code' => '61', 'name' => 'Custo das Mercadorias Vendidas', 'class' => 6, 'type' => 'expense', 'normal_balance' => 'debit'],
+        ['code' => '62', 'name' => 'Custos com o Pessoal', 'class' => 6, 'type' => 'expense', 'normal_balance' => 'debit'],
 
         // Classe 7 — Proveitos e Ganhos
         ['code' => '71', 'name' => 'Vendas e Serviços Prestados', 'class' => 7, 'type' => 'income', 'normal_balance' => 'credit'],

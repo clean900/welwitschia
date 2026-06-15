@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Tenant\AuthController;
+use App\Http\Controllers\Tenant\InvoiceController;
 use App\Http\Controllers\Tenant\OnboardingController;
 use App\Http\Controllers\Tenant\TwoFactorController;
 use Illuminate\Support\Facades\Route;
@@ -55,5 +56,13 @@ Route::middleware([
         Route::post('onboarding/proxypay', [OnboardingController::class, 'proxypay']);
         Route::post('onboarding/sms', [OnboardingController::class, 'sms']);
         Route::get('onboarding/status', [OnboardingController::class, 'status']);
+
+        // Facturação + ciclo de cobrança
+        Route::get('invoices', [InvoiceController::class, 'index']);
+        Route::post('invoices', [InvoiceController::class, 'store']);
+        Route::get('invoices/{invoice}', [InvoiceController::class, 'show']);
+        Route::post('invoices/{invoice}/issue', [InvoiceController::class, 'issue']);
+        Route::post('invoices/{invoice}/cancel', [InvoiceController::class, 'cancel']);
+        Route::post('invoices/{invoice}/request-payment', [InvoiceController::class, 'requestPayment']);
     });
 });

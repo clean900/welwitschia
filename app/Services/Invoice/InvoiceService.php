@@ -2,6 +2,7 @@
 
 namespace App\Services\Invoice;
 
+use App\Events\Invoice\InvoiceIssued;
 use App\Models\AuditLog;
 use App\Models\Invoice;
 use Illuminate\Support\Facades\DB;
@@ -80,6 +81,8 @@ class InvoiceService
             'number' => $invoice->number,
             'total' => (float) $invoice->total,
         ], Invoice::class, $invoice->id);
+
+        InvoiceIssued::dispatch($invoice);
 
         return $invoice;
     }

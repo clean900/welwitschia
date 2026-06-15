@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Tenant\AccountingController;
 use App\Http\Controllers\Tenant\AuthController;
 use App\Http\Controllers\Tenant\InvoiceController;
 use App\Http\Controllers\Tenant\OnboardingController;
@@ -64,5 +65,9 @@ Route::middleware([
         Route::post('invoices/{invoice}/issue', [InvoiceController::class, 'issue']);
         Route::post('invoices/{invoice}/cancel', [InvoiceController::class, 'cancel']);
         Route::post('invoices/{invoice}/request-payment', [InvoiceController::class, 'requestPayment']);
+
+        // Contabilidade (PGC Angola)
+        Route::get('accounting/journal', [AccountingController::class, 'journal']);
+        Route::get('accounting/trial-balance', [AccountingController::class, 'trialBalance']);
     });
 });

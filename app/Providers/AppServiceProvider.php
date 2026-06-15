@@ -2,9 +2,6 @@
 
 namespace App\Providers;
 
-use App\Events\Payment\PaymentReconciled;
-use App\Listeners\MarkInvoicePaid;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,9 +16,13 @@ class AppServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap any application services.
+     *
+     * Os listeners (MarkInvoicePaid, RecordSaleLedgerEntry, RecordReceiptLedgerEntry)
+     * são auto-descobertos pelo Laravel a partir de app/Listeners — não registar à mão
+     * para não disparar em duplicado.
      */
     public function boot(): void
     {
-        Event::listen(PaymentReconciled::class, MarkInvoicePaid::class);
+        //
     }
 }

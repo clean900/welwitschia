@@ -11,6 +11,7 @@ use App\Services\Payment\PaymentStateEngine;
 use App\Services\Payment\ProxyPayService;
 use App\Services\Payment\ReconciliationEngine;
 use App\Services\Sms\TelcoSmsService;
+use Database\Seeders\Tenant\PgcAngolaSeeder;
 use Tests\TenancyTestCase;
 
 class BillingCycleTest extends TenancyTestCase
@@ -18,6 +19,7 @@ class BillingCycleTest extends TenancyTestCase
     public function test_factura_calcula_iva_e_emite_com_numero_agt(): void
     {
         $this->makeTenant('inv1')->run(function () {
+            (new PgcAngolaSeeder())->run();
             $service = new InvoiceService(new AgtNumberGenerator());
 
             $invoice = $service->create([
@@ -50,6 +52,7 @@ class BillingCycleTest extends TenancyTestCase
     public function test_ciclo_completo_referencia_sms_e_factura_paga(): void
     {
         $this->makeTenant('inv3')->run(function () {
+            (new PgcAngolaSeeder())->run();
             // Mocks de rede — sem chamadas reais a ProxyPay/TelcoSMS.
             $proxypay = $this->createMock(ProxyPayService::class);
             $proxypay->method('createReference')->willReturn('987654321');

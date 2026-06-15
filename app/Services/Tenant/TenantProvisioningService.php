@@ -8,6 +8,7 @@ use App\Models\Subscription;
 use App\Models\Tenant;
 use App\Models\User;
 use Database\Seeders\RolesSeeder;
+use Database\Seeders\Tenant\PgcAngolaSeeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Spatie\Permission\Models\Role;
@@ -60,6 +61,9 @@ class TenantProvisioningService
             foreach (RolesSeeder::ROLES as $role) {
                 Role::findOrCreate($role, 'web');
             }
+
+            // Plano de contas PGC Angola para a nova empresa.
+            (new PgcAngolaSeeder())->run();
 
             $admin = User::create([
                 'name' => $data['admin_name'],

@@ -25,22 +25,9 @@ use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 |
 */
 
-Route::middleware([
-    'web',
-    InitializeTenancyByDomain::class,
-    PreventAccessFromCentralDomains::class,
-])->group(function () {
-    // Dashboard do tenant (subdomínio da empresa). O '/' central fica para web.php.
-    Route::get('/dashboard', function () {
-        return response()->json([
-            'tenant' => tenant('id'),
-            'name' => tenant('name'),
-        ]);
-    })->name('tenant.dashboard');
-});
-
 /*
-| API do tenant (subdomínio): login, 2FA e wizard de onboarding.
+| API do tenant (subdomínio): login, 2FA, onboarding, facturação, RH.
+| As páginas web do tenant (subdomínio) serão Inertia próprias, mais tarde.
 */
 Route::middleware([
     'api',

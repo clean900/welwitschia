@@ -12,6 +12,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->web(append: [
+            \App\Http\Middleware\HandleInertiaRequests::class,
+            \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
+        ]);
+
         $middleware->alias([
             'tenant' => \Stancl\Tenancy\Middleware\InitializeTenancyBySubdomain::class,
             'tenant.path' => \Stancl\Tenancy\Middleware\InitializeTenancyByPath::class,

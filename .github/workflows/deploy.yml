@@ -1,0 +1,52 @@
+name: Deploy
+
+# Deploy via git pull no servidor (Proxmox/VPS). Git é a fonte única de verdade:
+# nada se edita no servidor — só se faz pull do que está em main.
+#
+# Activar definindo os secrets no repo (Settings → Secrets → Actions):
+#   DEPLOY_HOST, DEPLOY_USER, DEPLOY_SSH_KEY, DEPLOY_PATH
+# Sem esses secrets, o job é ignorado (não falha).
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    # Só faz deploy se o CI passou (ou se for accionado à mão).
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Verificar secrets de deploy
+        id: gate
+        run: |
+          if [ -z "${{ secrets.DEPLOY_HOST }}" ]; then
+            echo "Sem DEPLOY_HOST — deploy ignorado (servidor ainda não configurado)."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Deploy por SSH
+        if: steps.gate.outputs.ready == 'true'
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            set -e
+            cd ${{ secrets.DEPLOY_PATH }}
+            git fetch --all
+            git reset --hard origin/main
+            composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction
+            php artisan migrate --force
+            php artisan tenants:migrate --force
+            php artisan config:cache
+            php artisan route:cache
+            php artisan horizon:terminate || true
+            echo "Deploy concluído."

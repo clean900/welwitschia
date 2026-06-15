@@ -19,12 +19,13 @@ class ProcessProxyPayCallback implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $queue = 'payments';
     public $tries = 3;
     public $timeout = 60;
 
     public function __construct(public array $payload)
     {
+        // Fila de alta prioridade dedicada a pagamentos.
+        $this->onQueue('payments');
     }
 
     public function handle(PaymentStateEngine $engine, ReconciliationEngine $reconciliation): void

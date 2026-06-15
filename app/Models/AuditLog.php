@@ -37,9 +37,30 @@ class AuditLog extends Model
     /**
      * Regista um evento na cadeia de auditoria.
      */
+    /**
+     * Encode canónico: ordena chaves recursivamente para que o hash seja
+     * estável independentemente da reordenação de chaves do jsonb (PostgreSQL).
+     */
+    protected static function canonicalHash(?array $payload): string
+    {
+        $canonicalize = function (&$value) use (&$canonicalize) {
+            if (is_array($value)) {
+                ksort($value);
+                foreach ($value as &$v) {
+                    $canonicalize($v);
+                }
+            }
+        };
+
+        $data = $payload ?? [];
+        $canonicalize($data);
+
+        return hash('sha256', json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+    }
+
     public static function record(string $event, array $payload, ?string $auditableType = null, $auditableId = null, ?int $userId = null): self
     {
-        $payloadHash = hash('sha256', json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+        $payloadHash = static::canonicalHash($payload);
         $prev = static::orderByDesc('id')->first();
         $prevChain = $prev?->chain_hash;
         $chainHash = hash('sha256', ($prevChain ?? '') . $payloadHash);
@@ -64,7 +85,7 @@ class AuditLog extends Model
     {
         $prevChain = null;
         foreach (static::orderBy('id')->cursor() as $log) {
-            $expectedPayloadHash = hash('sha256', json_encode($log->payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+            $expectedPayloadHash = static::canonicalHash($log->payload);
             if (! hash_equals($expectedPayloadHash, $log->payload_hash)) {
                 return false;
             }

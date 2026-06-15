@@ -23,7 +23,11 @@ Route::middleware([
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
-    Route::get('/', function () {
-        return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
-    });
+    // Dashboard do tenant (subdomínio da empresa). O '/' central fica para web.php.
+    Route::get('/dashboard', function () {
+        return response()->json([
+            'tenant' => tenant('id'),
+            'name' => tenant('name'),
+        ]);
+    })->name('tenant.dashboard');
 });

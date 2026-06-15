@@ -16,10 +16,13 @@ return [
      *
      * Only relevant if you're using the domain or subdomain identification middleware.
      */
-    'central_domains' => [
-        '127.0.0.1',
-        'localhost',
-    ],
+    'central_domains' => array_filter(explode(',', (string) env('CENTRAL_DOMAINS', '127.0.0.1,localhost'))),
+
+    /**
+     * Domínio base dos subdomínios dos tenants (ex.: welwitschia.ao → acme.welwitschia.ao).
+     * Em dev/teste é "localhost" (acme.localhost). Usado no Route::domain das rotas de tenant.
+     */
+    'tenant_base_domain' => env('TENANT_BASE_DOMAIN', 'localhost'),
 
     /**
      * Tenancy bootstrappers are executed when tenancy is initialized.

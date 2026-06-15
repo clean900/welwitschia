@@ -42,6 +42,9 @@ class TenantProvisioningService
             'trial_ends_at' => $plan->trial_days > 0 ? now()->addDays($plan->trial_days) : null,
         ]);
 
+        // Subdomínio do tenant (ex.: acme → acme.welwitschia.ao). Resolvido por subdomínio.
+        $tenant->domains()->create(['domain' => $data['slug']]);
+
         // Central: subscrição inicial.
         Subscription::create([
             'tenant_id' => $tenant->id,

@@ -24,6 +24,15 @@ return Application::configure(basePath: dirname(__DIR__))
             'hmac' => \App\Http\Middleware\VerifyProxyPayHmac::class,
         ]);
 
+        // Convidados em subdomínio de tenant → login do tenant; senão → login central.
+        $middleware->redirectGuestsTo(function (\Illuminate\Http\Request $request) {
+            if (function_exists('tenancy') && tenancy()->initialized) {
+                return route('tenant.login', ['tenant' => tenant('id')]);
+            }
+
+            return route('login');
+        });
+
         // Callbacks ProxyPay são server-to-server → isentar de CSRF.
         $middleware->validateCsrfTokens(except: [
             'api/*',

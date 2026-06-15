@@ -6,35 +6,46 @@ use App\Http\Controllers\Tenant\AccountingController;
 use App\Http\Controllers\Tenant\AuthController;
 use App\Http\Controllers\Tenant\EmployeeController;
 use App\Http\Controllers\Tenant\InvoiceController;
-use App\Http\Controllers\Tenant\PayrollController;
 use App\Http\Controllers\Tenant\OnboardingController;
+use App\Http\Controllers\Tenant\PayrollController;
+use App\Http\Controllers\Tenant\TenantDashboardController;
+use App\Http\Controllers\Tenant\TenantWebAuthController;
 use App\Http\Controllers\Tenant\TwoFactorController;
 use Illuminate\Support\Facades\Route;
-use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
+use Stancl\Tenancy\Middleware\InitializeTenancyBySubdomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 /*
 |--------------------------------------------------------------------------
-| Tenant Routes
+| Tenant Routes (subdomínio: acme.welwitschia.ao)
 |--------------------------------------------------------------------------
-|
-| Here you can register the tenant routes for your application.
-| These routes are loaded by the TenantRouteServiceProvider.
-|
-| Feel free to customize them however you want. Good luck!
-|
+| Isoladas por Route::domain para não colidirem com as rotas centrais.
 */
 
-/*
-| API do tenant (subdomínio): login, 2FA, onboarding, facturação, RH.
-| As páginas web do tenant (subdomínio) serão Inertia próprias, mais tarde.
-*/
-Route::middleware([
+$base = config('tenancy.tenant_base_domain', 'localhost');
+
+// --- App web do tenant (Inertia, sessão) ---
+Route::domain('{tenant}.' . $base)->middleware([
+    'web',
+    InitializeTenancyBySubdomain::class,
+    PreventAccessFromCentralDomains::class,
+])->group(function () {
+    Route::get('/login', [TenantWebAuthController::class, 'create'])->name('tenant.login');
+    Route::post('/login', [TenantWebAuthController::class, 'store']);
+
+    Route::middleware('auth')->group(function () {
+        Route::post('/logout', [TenantWebAuthController::class, 'destroy'])->name('tenant.logout');
+        Route::get('/', [TenantDashboardController::class, 'index'])->name('tenant.dashboard');
+    });
+});
+
+// --- API token do tenant (Sanctum) ---
+Route::domain('{tenant}.' . $base)->middleware([
     'api',
-    InitializeTenancyByDomain::class,
+    InitializeTenancyBySubdomain::class,
     PreventAccessFromCentralDomains::class,
 ])->prefix('api')->group(function () {
-    Route::post('login', [AuthController::class, 'login'])->name('tenant.login');
+    Route::post('login', [AuthController::class, 'login']);
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('me', [AuthController::class, 'me']);
@@ -47,7 +58,6 @@ Route::middleware([
         Route::post('onboarding/sms', [OnboardingController::class, 'sms']);
         Route::get('onboarding/status', [OnboardingController::class, 'status']);
 
-        // Facturação + ciclo de cobrança
         Route::get('invoices', [InvoiceController::class, 'index']);
         Route::post('invoices', [InvoiceController::class, 'store']);
         Route::get('invoices/{invoice}', [InvoiceController::class, 'show']);
@@ -55,11 +65,9 @@ Route::middleware([
         Route::post('invoices/{invoice}/cancel', [InvoiceController::class, 'cancel']);
         Route::post('invoices/{invoice}/request-payment', [InvoiceController::class, 'requestPayment']);
 
-        // Contabilidade (PGC Angola)
         Route::get('accounting/journal', [AccountingController::class, 'journal']);
         Route::get('accounting/trial-balance', [AccountingController::class, 'trialBalance']);
 
-        // RH / Salários
         Route::get('employees', [EmployeeController::class, 'index']);
         Route::post('employees', [EmployeeController::class, 'store']);
         Route::get('employees/{employee}', [EmployeeController::class, 'show']);

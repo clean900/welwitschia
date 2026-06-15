@@ -15,9 +15,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Central/landlord apenas. As roles são semeadas POR tenant (schema isolado)
+        // durante o provisionamento — ver TenantProvisioningService.
         $this->call([
             PlansSeeder::class,
-            RolesSeeder::class,
         ]);
     }
 }

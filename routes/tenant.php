@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Tenant\AuthController;
+use App\Http\Controllers\Tenant\OnboardingController;
+use App\Http\Controllers\Tenant\TwoFactorController;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
@@ -30,4 +33,27 @@ Route::middleware([
             'name' => tenant('name'),
         ]);
     })->name('tenant.dashboard');
+});
+
+/*
+| API do tenant (subdomínio): login, 2FA e wizard de onboarding.
+*/
+Route::middleware([
+    'api',
+    InitializeTenancyByDomain::class,
+    PreventAccessFromCentralDomains::class,
+])->prefix('api')->group(function () {
+    Route::post('login', [AuthController::class, 'login'])->name('tenant.login');
+
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('me', [AuthController::class, 'me']);
+        Route::post('logout', [AuthController::class, 'logout']);
+
+        Route::post('2fa/enable', [TwoFactorController::class, 'enable']);
+        Route::post('2fa/confirm', [TwoFactorController::class, 'confirm']);
+
+        Route::post('onboarding/proxypay', [OnboardingController::class, 'proxypay']);
+        Route::post('onboarding/sms', [OnboardingController::class, 'sms']);
+        Route::get('onboarding/status', [OnboardingController::class, 'status']);
+    });
 });

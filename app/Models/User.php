@@ -15,6 +15,9 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasApiTokens, HasFactory, HasRoles, Notifiable;
 
+    /** Guard dos utilizadores internos do tenant (RBAC spatie). */
+    protected string $guard_name = 'tenant';
+
     /**
      * The attributes that are mass assignable.
      *

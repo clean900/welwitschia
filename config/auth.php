@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Membership;
 use App\Models\User;
 
 return [
@@ -38,7 +39,14 @@ return [
     */
 
     'guards' => [
+        // Guard principal dos clientes SaaS — autentica contra o diretório central 'accounts'.
         'web' => [
+            'driver' => 'session',
+            'provider' => 'accounts',
+        ],
+
+        // Utilizadores internos de cada empresa (RBAC por tenant via spatie/permission).
+        'tenant' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
@@ -62,15 +70,17 @@ return [
     */
 
     'providers' => [
+        // Clientes SaaS (login único em welwitschia.ao).
+        'accounts' => [
+            'driver' => 'eloquent',
+            'model' => Membership::class,
+        ],
+
+        // Utilizadores dentro de cada tenant (RBAC por empresa) — usado internamente.
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', User::class),
         ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*

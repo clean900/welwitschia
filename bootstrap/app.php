@@ -22,16 +22,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'tenant.path' => \Stancl\Tenancy\Middleware\InitializeTenancyByPath::class,
             'module' => \App\Http\Middleware\EnsureModuleIsActive::class,
             'hmac' => \App\Http\Middleware\VerifyProxyPayHmac::class,
+            'tenant.account' => \App\Http\Middleware\InitializeTenancyForAccount::class,
         ]);
-
-        // Convidados em subdomínio de tenant → login do tenant; senão → login central.
-        $middleware->redirectGuestsTo(function (\Illuminate\Http\Request $request) {
-            if (function_exists('tenancy') && tenancy()->initialized) {
-                return route('tenant.login', ['tenant' => tenant('id')]);
-            }
-
-            return route('login');
-        });
 
         // Callbacks ProxyPay são server-to-server → isentar de CSRF.
         $middleware->validateCsrfTokens(except: [

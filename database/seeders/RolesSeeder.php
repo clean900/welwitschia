@@ -25,7 +25,7 @@ class RolesSeeder extends Seeder
     public function run(): void
     {
         foreach (self::ROLES as $role) {
-            Role::findOrCreate($role, 'web');
+            Role::findOrCreate($role, 'tenant');
         }
     }
 }

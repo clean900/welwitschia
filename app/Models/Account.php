@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Conta contabilística (plano de contas PGC, schema do tenant).
+ */
 class Account extends Model
 {
     protected $fillable = [

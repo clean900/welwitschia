@@ -3,6 +3,7 @@
 namespace App\Services\Tenant;
 
 use App\Models\AuditLog;
+use App\Models\Membership;
 use App\Models\Plan;
 use App\Models\Subscription;
 use App\Models\Tenant;
@@ -27,6 +28,10 @@ class TenantProvisioningService
     {
         if (Tenant::where('slug', $data['slug'])->orWhere('id', $data['slug'])->exists()) {
             throw ValidationException::withMessages(['slug' => 'Já existe uma empresa com este identificador.']);
+        }
+
+        if (Membership::where('email', $data['admin_email'])->exists()) {
+            throw ValidationException::withMessages(['admin_email' => 'Este email já está associado a uma empresa.']);
         }
 
         $plan = Plan::where('slug', $data['plan'])->firstOrFail();
@@ -57,12 +62,20 @@ class TenantProvisioningService
             'ends_at' => now()->addMonth(),
         ]);
 
+        // Diretório central: identidade de login (email → empresa). O cast 'hashed' encripta.
+        Membership::create([
+            'name' => $data['admin_name'],
+            'email' => $data['admin_email'],
+            'password' => $data['admin_password'],
+            'tenant_id' => $tenant->id,
+        ]);
+
         // Tenant: roles + admin + auditoria, dentro do schema isolado.
         $tenant->run(function () use ($data) {
             app(PermissionRegistrar::class)->forgetCachedPermissions();
 
             foreach (RolesSeeder::ROLES as $role) {
-                Role::findOrCreate($role, 'web');
+                Role::findOrCreate($role, 'tenant');
             }
 
             // Plano de contas PGC Angola para a nova empresa.

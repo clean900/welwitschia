@@ -17,6 +17,9 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
         ]);
 
+        // Utilizadores já autenticados que abrem /login vão para o workspace.
+        $middleware->redirectUsersTo('/app');
+
         $middleware->alias([
             'tenant' => \Stancl\Tenancy\Middleware\InitializeTenancyBySubdomain::class,
             'tenant.path' => \Stancl\Tenancy\Middleware\InitializeTenancyByPath::class,

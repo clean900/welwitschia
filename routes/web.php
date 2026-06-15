@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\App\AppInvoiceController;
 use App\Http\Controllers\Central\RegisterTenantWebController;
 use App\Http\Controllers\CompanyAuthController;
 use App\Http\Controllers\Tenant\TenantDashboardController;
@@ -35,4 +36,13 @@ Route::post('/logout', [CompanyAuthController::class, 'destroy'])->middleware('a
 // --- Workspace da empresa (autenticado; tenancy resolvida pela conta) ---
 Route::middleware(['auth', 'tenant.account'])->prefix('app')->group(function () {
     Route::get('/', [TenantDashboardController::class, 'index'])->name('app.dashboard');
+
+    // Faturação
+    Route::get('/invoices', [AppInvoiceController::class, 'index'])->name('app.invoices.index');
+    Route::get('/invoices/criar', [AppInvoiceController::class, 'create'])->name('app.invoices.create');
+    Route::post('/invoices', [AppInvoiceController::class, 'store'])->name('app.invoices.store');
+    Route::get('/invoices/{invoice}', [AppInvoiceController::class, 'show'])->name('app.invoices.show');
+    Route::post('/invoices/{invoice}/emitir', [AppInvoiceController::class, 'issue'])->name('app.invoices.issue');
+    Route::post('/invoices/{invoice}/cancelar', [AppInvoiceController::class, 'cancel'])->name('app.invoices.cancel');
+    Route::post('/invoices/{invoice}/cobrar', [AppInvoiceController::class, 'requestPayment'])->name('app.invoices.charge');
 });

@@ -139,7 +139,10 @@ return [
          * disable asset() helper tenancy and explicitly use tenant_asset() calls in places
          * where you want to use tenant-specific assets (product images, avatars, etc).
          */
-        'asset_helper_tenancy' => true,
+        // Welwitschia: assets do Vite/build são globais (não por-tenant). Sem isto, o
+        // asset() seria reescrito para /tenancy/assets/ e o app.js dava 404 no /app.
+        // Para assets específicos do tenant (avatares, etc.) usar tenant_asset().
+        'asset_helper_tenancy' => false,
     ],
 
     /**

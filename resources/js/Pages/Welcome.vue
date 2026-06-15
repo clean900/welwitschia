@@ -1,11 +1,15 @@
 <script setup>
 import Logo from '@/Components/Logo.vue';
 import { Head, Link } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
 defineProps({
     canLogin: Boolean,
     plansCount: Number,
 });
+
+// Usa /img/hero.png (a planta) se existir; caso contrário cai no logo SVG.
+const heroImageFailed = ref(false);
 
 const nav = ['Soluções', 'Módulos', 'Integrações', 'Recursos', 'Preços', 'Sobre nós'];
 const stats = [
@@ -76,7 +80,14 @@ const cycle = ['Faturação', 'Cobrança', 'Conciliação', 'Contabilização'];
             <div class="relative h-[460px] hidden lg:block">
                 <div class="hero-glow"></div>
                 <div class="absolute inset-0 flex items-center justify-center">
-                    <Logo :size="220" />
+                    <img
+                        v-show="!heroImageFailed"
+                        src="/img/hero.png"
+                        alt="Welwitschia"
+                        class="max-h-[440px] w-auto object-contain drop-shadow-[0_0_60px_rgba(16,185,129,0.35)]"
+                        @error="heroImageFailed = true"
+                    />
+                    <Logo v-if="heroImageFailed" :size="220" />
                 </div>
 
                 <!-- Cartão ciclo -->

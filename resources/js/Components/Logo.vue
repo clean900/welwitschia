@@ -1,10 +1,25 @@
 <script setup>
+import { ref } from 'vue';
+
 defineProps({ size: { type: Number, default: 36 } });
+
+// Usa /img/logo.png se existir; caso contrário, o "W" SVG placeholder.
+const failed = ref(false);
 </script>
 
 <template>
-    <!-- Placeholder do "W" Welwitschia (verde/rosa). Substituir por /img/logo.png quando disponível. -->
-    <svg :width="size" :height="size" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <img
+        v-show="!failed"
+        src="/img/logo.png"
+        alt="Welwitschia"
+        :width="size"
+        :height="size"
+        class="object-contain"
+        style="display:inline-block"
+        @error="failed = true"
+    />
+    <!-- Placeholder "W" verde/rosa enquanto não há /img/logo.png -->
+    <svg v-if="failed" :width="size" :height="size" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
             <linearGradient id="wg" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
                 <stop stop-color="#16a34a" />

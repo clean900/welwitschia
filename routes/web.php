@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\App\AppEmployeeController;
 use App\Http\Controllers\App\AppInvoiceController;
 use App\Http\Controllers\App\AppOnboardingController;
+use App\Http\Controllers\App\AppPayrollController;
 use App\Http\Controllers\Central\RegisterTenantWebController;
 use App\Http\Controllers\CompanyAuthController;
 use App\Http\Controllers\Tenant\TenantDashboardController;
@@ -51,4 +53,13 @@ Route::middleware(['auth', 'tenant.account'])->prefix('app')->group(function () 
     Route::get('/onboarding', [AppOnboardingController::class, 'index'])->name('app.onboarding');
     Route::post('/onboarding/proxypay', [AppOnboardingController::class, 'saveProxyPay'])->name('app.onboarding.proxypay');
     Route::post('/onboarding/sms', [AppOnboardingController::class, 'saveSms'])->name('app.onboarding.sms');
+
+    // RH & Salários
+    Route::get('/colaboradores', [AppEmployeeController::class, 'index'])->name('app.employees.index');
+    Route::post('/colaboradores', [AppEmployeeController::class, 'store'])->name('app.employees.store');
+    Route::delete('/colaboradores/{employee}', [AppEmployeeController::class, 'destroy'])->name('app.employees.destroy');
+
+    Route::get('/salarios', [AppPayrollController::class, 'index'])->name('app.payrolls.index');
+    Route::post('/salarios', [AppPayrollController::class, 'store'])->name('app.payrolls.store');
+    Route::get('/salarios/{payroll}', [AppPayrollController::class, 'show'])->name('app.payrolls.show');
 });

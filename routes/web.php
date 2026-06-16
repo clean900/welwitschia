@@ -4,6 +4,7 @@ use App\Http\Controllers\App\AppAccountingController;
 use App\Http\Controllers\App\AppEmployeeController;
 use App\Http\Controllers\App\AppInvoiceController;
 use App\Http\Controllers\App\AppOnboardingController;
+use App\Http\Controllers\App\AppPaymentController;
 use App\Http\Controllers\App\AppPayrollController;
 use App\Http\Controllers\Central\RegisterTenantWebController;
 use App\Http\Controllers\CompanyAuthController;
@@ -63,6 +64,9 @@ Route::middleware(['auth', 'tenant.account'])->prefix('app')->group(function () 
     Route::get('/salarios', [AppPayrollController::class, 'index'])->name('app.payrolls.index');
     Route::post('/salarios', [AppPayrollController::class, 'store'])->name('app.payrolls.store');
     Route::get('/salarios/{payroll}', [AppPayrollController::class, 'show'])->name('app.payrolls.show');
+
+    // Cobranças
+    Route::get('/cobrancas', [AppPaymentController::class, 'index'])->name('app.payments.index');
 
     // Contabilidade (PGC)
     Route::get('/contabilidade', [AppAccountingController::class, 'trialBalance'])->name('app.accounting.balance');

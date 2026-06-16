@@ -1,123 +1,87 @@
-# Welwitschia ERP — Inventário de Funcionalidades
+# Welwitschia ERP — Estado vs. Plano Final v4.0
 
-> Estado em 2026-06-16. **58 testes automatizados verdes.**
-> Legenda: ✅ implementado e testado · 🟡 backend pronto, falta UI (ou parcial) · ⬜ por implementar (roadmap)
-
----
-
-## 1. Núcleo & Multi-tenancy
-| Funcionalidade | Estado |
-|---|---|
-| Multi-tenant **schema-per-tenant** (stancl/tenancy, PostgreSQL) | ✅ |
-| Provisionamento de empresa (schema + roles + admin + subscrição) | ✅ |
-| Isolamento total de dados entre empresas | ✅ |
-| Diretório central de login (`memberships`, email → empresa) | ✅ |
-| Domínio único SaaS (welwitschia.ao, sem subdomínios) | ✅ |
-| Plano de contas PGC semeado por empresa | ✅ |
-
-## 2. Autenticação & Segurança
-| Funcionalidade | Estado |
-|---|---|
-| Login único por sessão (email + password) | ✅ |
-| Tokens API (Sanctum) por tenant | ✅ |
-| **2FA TOTP** (Google Authenticator) | 🟡 (serviço pronto, falta ecrã) |
-| Reset de password | ⬜ |
-| RBAC por empresa (spatie, 9 papéis) | 🟡 (papéis criados, falta gestão na UI) |
-| **Auditoria imutável hash-chain** + comando `audit:verify-chain` | ✅ |
-| Encriptação de chaves (ProxyPay/SMS) AES + mascaramento em logs | ✅ |
-
-## 3. Faturação & Cobrança
-| Funcionalidade | Estado |
-|---|---|
-| Faturas: criar, itens, **IVA 14%** | ✅ |
-| Emitir com **numeração AGT** (sequência atómica) | ✅ |
-| Cancelar fatura | ✅ |
-| Gerar **referência ProxyPay** + **SMS** ao cliente | ✅ |
-| Motor de pagamentos (state machine + idempotência) | ✅ |
-| Callback ProxyPay (webhook + HMAC + fila Horizon) | ✅ |
-| Reconciliação → fatura paga (automático) | ✅ |
-| Lista de **Cobranças** (estados dos pagamentos) | ✅ |
-| Proformas / recibos separados | ⬜ |
-| **PDF** de faturas e recibos | ⬜ |
-| Submissão **e-Fatura AGT** (JWS, QR Code) | ⬜ (aguarda API AGT) |
-| Múltiplos métodos de pagamento / prestações | ⬜ |
-
-## 4. Contabilidade (PGC Angola)
-| Funcionalidade | Estado |
-|---|---|
-| Razão em **partidas dobradas** (validação débito=crédito) | ✅ |
-| Lançamentos automáticos: venda, recebimento, salários | ✅ |
-| **Balancete** (saldos por conta) | ✅ |
-| Plano de contas PGC (subconjunto operacional) | ✅ |
-| Centros de custo | ⬜ |
-| Demonstrações financeiras (Balanço, DR) | ⬜ |
-| Ativos / amortizações (EAM) | ⬜ |
-
-## 5. RH & Salários
-| Funcionalidade | Estado |
-|---|---|
-| Colaboradores (criar, listar, desactivar) | ✅ |
-| **Folha salarial** (IRT + INSS automáticos) | ✅ |
-| Recibos por colaborador | ✅ |
-| Lançamento contabilístico dos salários | ✅ |
-| **Recibo PDF** | ⬜ |
-| Subsídios/benefícios avançados, férias, presenças | ⬜ |
-| Recrutamento (ATS), avaliação, formação | ⬜ |
-
-## 6. SaaS — Planos, Subscrições & Módulos
-| Funcionalidade | Estado |
-|---|---|
-| 4 Planos (Starter/Business/Enterprise/Unlimited) | ✅ |
-| Subscrição criada no registo (trial) | 🟡 (modelo pronto, falta cobrança recorrente) |
-| Add-ons / módulos à la carte (modelo + middleware) | 🟡 (sem fluxo de ativação na UI) |
-| Cobrança recorrente de subscrições via ProxyPay | ⬜ |
-
-## 7. Back-office da Plataforma (super-admin Welwitschia) — **PRÓXIMO**
-| Funcionalidade | Estado |
-|---|---|
-| Consola super-admin (separada do tenant) | ⬜ |
-| Gerir empresas (listar, suspender, ver métricas) | ⬜ |
-| Gerir planos e subscrições | ⬜ |
-| **Activar TelcoSMS por empresa** (governança) | ⬜ |
-| Gerir clientes/parceiros da landing | ⬜ |
-| Dashboard de receita da plataforma (MRR, churn) | ⬜ |
-
-## 8. Frontend / UI
-| Ecrã | Estado |
-|---|---|
-| Landing pública (hero, módulos, integrações) | ✅ |
-| Wizard de registo de empresa (3 passos) | ✅ |
-| Login único | ✅ |
-| Painel (KPIs, gráfico receitas, donut, atividade) | ✅ |
-| Faturas (lista/criar/detalhe/ações) | ✅ |
-| Cobranças | ✅ |
-| RH & Salários | ✅ |
-| Contabilidade (balancete, razão) | ✅ |
-| Configuração (ProxyPay/SMS) | ✅ |
-| **Relatórios** | ⬜ |
-| App mobile (iOS/Android) | ⬜ |
-
-## 9. Infra & DevOps
-| Funcionalidade | Estado |
-|---|---|
-| Git como fonte única (GitHub `clean900/welwitschia`) | ✅ |
-| CI (58 testes, Postgres+Redis) | ✅ |
-| Deploy SSH (GitHub Actions, gated por secrets) | ✅ (falta servidor) |
-| Horizon (fila de pagamentos) | ✅ |
-| **Deploy em VPS/Proxmox** | ⬜ |
-| Validação fiscal (IRT/INSS/PGC/AGT) com contabilista | ⬜ **(bloqueador de produção)** |
-
-## 10. Módulos avançados (roadmap — do catálogo de 77)
-⬜ CRM Pipeline · Encomendas · POS offline · Armazéns/Lotes · Projetos/Timesheet ·
-Helpdesk · DMS + IA documental · Contratos/Assinatura digital · BI self-service ·
-Agentes IA/MCP · Kanban · Secretária Virtual IA · Frota GPS · Video (Jitsi) ·
-VoIP (Asterisk/GoIP) · CCTV NVR · Gestão de envios/POD · eCommerce/Storefronts ·
-Marketing/Redes Sociais · Omnichannel WhatsApp · Open Banking · Expansão PALOP
+> Mapeado ao **Plano Final & Cronograma v4.0** (77 módulos · 22 MVP · 32 Fase 2 · 23 Roadmap · 14 sprints · 3 gates).
+> Estado em 2026-06-16 · **58 testes automatizados verdes.**
+> Legenda: ✅ feito e testado · 🟡 parcial / backend pronto sem UI · ⬜ por fazer
 
 ---
 
-### Resumo
-- **Ciclo financeiro completo** (faturação → cobrança → contabilidade → salários): ✅ **implementado e testado**
-- **MVP utilizável** com UI escura e identidade visual: ✅
-- **Falta para produção:** back-office da plataforma, PDF, validação fiscal, deploy real
-- **Roadmap longo:** ~55 dos 77 módulos do catálogo original
+## Gates do plano
+| Gate | Critério | Estado |
+|---|---|---|
+| **Gate 1** (D28) | Ciclo cobrança completo (factura→ProxyPay→SMS→callback→reconciliação→lançamento) | ✅ **alcançado** (lógica + testes; falta credenciais reais) |
+| **Gate 2** (D70) | Os 22 módulos MVP integrados | 🟡 **~14/22** (core financeiro+RH+contab. feitos; faltam vendas/compras/stock) |
+| **Gate 3** (D86) | UAT + sign-off fiscal/laboral + deploy produção | ⬜ (bloqueado por validação fiscal + servidor) |
+
+## 22 Módulos MVP — estado real
+| Módulo (plano) | Estado |
+|---|---|
+| M01–M02 Auth + RBAC (2FA, papéis) | ✅ (login+Sanctum+2FA serviço; RBAC 9 papéis) |
+| M03 Tenant middleware | ✅ |
+| M04 Auditoria hash-chain | ✅ (+ comando `audit:verify-chain`) |
+| M05 Configuração tenant (ProxyPay/SMS) | ✅ |
+| M06 API REST | 🟡 (Sanctum; falta OpenAPI/Swagger) |
+| M07 Notificações | 🟡 (SMS sim; email/push não) |
+| M10 Logs do sistema | 🟡 |
+| **M11 Motor de pagamentos** (state machine, idempotência, retry) | ✅ |
+| **M12 ProxyPay por tenant** (HMAC, circuit breaker) | ✅ (falta circuit breaker) |
+| **M13 TelcoSMS por tenant** (Sender ID) | ✅ |
+| **M14 Reconciliação** | ✅ |
+| M15–M16 Cobrança automática (lembretes D+1/7/15, comprovativos) | ⬜ |
+| M19–M20 Facturação + Numeração AGT | ✅ |
+| M22–M23 Proformas + **PDF** | ⬜ |
+| M24–M25 PGC + Lançamentos | ✅ |
+| M27 IVA (apuramento mensal) | 🟡 (IVA na factura; falta apuramento) |
+| M32–M33 Colaboradores + Salários (IRT/INSS) | ✅ |
+| M34–M36 Presenças + Férias + **Recibos PDF** | 🟡 (recibos no ecrã; falta presenças/férias/PDF) |
+| M41 Clientes CRM (NIF, crédito, score) | 🟡 (cliente como texto na factura) |
+| M44 Tabelas de preços | ⬜ |
+| M49–M51 Fornecedores + Compras + Stock | ⬜ |
+| M59 DMS básico | ⬜ |
+| M66 Analytics cobrança (DSO, aging) | 🟡 (painel com KPIs; falta DSO/aging) |
+| M68 n8n (10 workflows) | ⬜ (substituído por listeners+Horizon) |
+
+## SaaS / Backend Admin (plano S5 + S8) — **EM CURSO**
+| Funcionalidade | Estado |
+|---|---|
+| Schema landlord (tenants, plans, subscriptions, tenant_modules) | ✅ |
+| Onboarding: registo → tenant criado | ✅ (falta pagar plano via ProxyPay) |
+| **Backend Admin: gerir tenants** | ⬜ (a construir) |
+| **Activar TelcoSMS por tenant (admin)** | ⬜ (a construir) |
+| **Métricas plataforma (MRR, módulos, consumo SMS)** | ⬜ (a construir) |
+| Clientes/parceiros da landing | ⬜ (a construir) |
+| `ModuleEnabled` middleware (bloqueia módulos inactivos) | ✅ (middleware; falta fluxo de activação) |
+| Cobrança recorrente de subscrições | ⬜ |
+
+## Frontend (Vue 3) — ecrãs
+✅ Landing · Wizard registo · Login · Painel · Faturas · Cobranças · RH & Salários · Contabilidade · Configuração
+⬜ Relatórios · Vendas · Compras/Stock · Clientes · App mobile
+
+## Infra & DevOps
+| | Estado |
+|---|---|
+| Git fonte única (GitHub) + CI (58 testes) | ✅ |
+| Deploy SSH (GitHub Actions) | ✅ (falta servidor) |
+| Horizon (fila pagamentos) | ✅ |
+| Proxmox/VPS + Caddy SSL wildcard | ⬜ |
+| n8n self-hosted | ⬜ |
+| Backups PostgreSQL→MinIO, monitoring | ⬜ |
+
+## Fase 2 (32 módulos) e Roadmap (23) — resumo
+⬜ CRM Pipeline · POS offline · Armazéns/Lotes · Projetos/Timesheet · Helpdesk · DMS+IA ·
+Contratos/Assinatura · BI · Agentes IA/MCP · Kanban · Secretária Virtual IA · Frota GPS ·
+Jitsi · VoIP/GoIP · CCTV NVR · POD · eCommerce/Storefronts · WhatsApp · e-Fatura AGT ·
+Orçamentação · Recrutamento ATS · e-learning · Open Banking · Expansão PALOP
+
+---
+
+## Decisões que diferem do plano (aprovadas pelo Bráulio)
+1. **Domínio único** (welwitschia.ao + login email→empresa) em vez de **subdomínio wildcard** `*.welwitschia.ao` — isolamento por schema mantém-se.
+2. **Sanctum** (tokens + sessão) em vez de **JWT** — equivalente, mais simples.
+3. **Listeners + Horizon** em vez de **n8n** para as automações do ciclo (mais testável; n8n fica para Fase 2).
+4. **Deploy**: VPS/Proxmox em vez de cPanel (incompatível com Postgres/Redis/Horizon).
+
+## Bloqueadores reais para produção
+- **Validação fiscal/laboral AO** (IRT, INSS, IVA, PGC, numeração AGT) — sign-off de consultor.
+- **Credenciais reais** ProxyPay + TelcoSMS.
+- **Servidor** (Proxmox/VPS) provisionado.

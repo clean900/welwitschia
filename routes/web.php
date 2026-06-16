@@ -9,6 +9,7 @@ use App\Http\Controllers\App\AppPayrollController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminCompanyController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminPartnerController;
 use App\Http\Controllers\Central\RegisterTenantWebController;
 use App\Http\Controllers\CompanyAuthController;
 use App\Http\Controllers\Tenant\TenantDashboardController;
@@ -27,6 +28,7 @@ Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => true,
         'plansCount' => Plan::where('is_active', true)->count(),
+        'partners' => \App\Models\LandingPartner::visible()->get(['name', 'logo_url']),
     ]);
 })->name('home');
 
@@ -91,5 +93,11 @@ Route::prefix('admin')->group(function () {
         Route::post('/empresas/{tenant}/suspender', [AdminDashboardController::class, 'suspend'])->name('admin.companies.suspend');
         Route::get('/empresas/{tenant}', [AdminCompanyController::class, 'show'])->name('admin.companies.show');
         Route::post('/empresas/{tenant}/sms', [AdminCompanyController::class, 'activateSms'])->name('admin.companies.sms');
+
+        // Parceiros da landing
+        Route::get('/parceiros', [AdminPartnerController::class, 'index'])->name('admin.partners.index');
+        Route::post('/parceiros', [AdminPartnerController::class, 'store'])->name('admin.partners.store');
+        Route::post('/parceiros/{partner}/toggle', [AdminPartnerController::class, 'toggle'])->name('admin.partners.toggle');
+        Route::delete('/parceiros/{partner}', [AdminPartnerController::class, 'destroy'])->name('admin.partners.destroy');
     });
 });

@@ -5,6 +5,7 @@ import { Head, Link } from '@inertiajs/vue3';
 defineProps({
     canLogin: Boolean,
     plansCount: Number,
+    partners: { type: Array, default: () => [] },
 });
 
 const nav = ['Soluções', 'Módulos', 'Integrações', 'Recursos', 'Preços', 'Sobre nós'];
@@ -136,7 +137,18 @@ const cycle = ['Faturação', 'Cobrança', 'Conciliação', 'Contabilização'];
             </div>
         </section>
 
-        <!-- INTEGRAÇÕES / PARCEIROS (geríveis pelo admin no futuro) -->
+        <!-- EMPRESAS QUE CONFIAM (geríveis pelo admin) -->
+        <section v-if="partners.length" class="relative z-10 max-w-7xl mx-auto px-8 pb-12">
+            <div class="text-center text-[11px] uppercase tracking-[.2em] text-slate-600 mb-6">Empresas que confiam no Welwitschia</div>
+            <div class="flex flex-wrap items-center justify-center gap-x-12 gap-y-6 opacity-70">
+                <template v-for="p in partners" :key="p.name">
+                    <img v-if="p.logo_url" :src="p.logo_url" :alt="p.name" class="h-8 w-auto object-contain grayscale opacity-80 hover:opacity-100 transition" />
+                    <span v-else class="text-slate-300 font-semibold text-lg">{{ p.name }}</span>
+                </template>
+            </div>
+        </section>
+
+        <!-- INTEGRAÇÕES -->
         <section class="relative z-10 max-w-7xl mx-auto px-8 pb-16">
             <div class="text-center text-[11px] uppercase tracking-[.2em] text-slate-600 mb-6">Integra com o ecossistema angolano</div>
             <div class="flex flex-wrap items-center justify-center gap-x-12 gap-y-4 opacity-50">

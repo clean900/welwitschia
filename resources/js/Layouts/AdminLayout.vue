@@ -1,6 +1,6 @@
 <script setup>
 import Logo from '@/Components/Logo.vue';
-import { router, usePage } from '@inertiajs/vue3';
+import { Link, router, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 
 const page = usePage();
@@ -23,10 +23,12 @@ function logout() {
                         <div class="text-[10px] uppercase tracking-widest text-slate-500">Back-office</div>
                     </div>
                 </div>
-                <div class="flex items-center gap-4 text-sm">
-                    <span class="text-slate-400">{{ admin?.name }}</span>
-                    <button @click="logout" class="text-slate-500 hover:text-pink-400">Sair</button>
-                </div>
+                <nav class="flex items-center gap-1 text-sm">
+                    <Link href="/admin" class="px-3 py-1.5 rounded-lg text-slate-300 hover:bg-white/5">Empresas</Link>
+                    <Link href="/admin/parceiros" class="px-3 py-1.5 rounded-lg text-slate-300 hover:bg-white/5">Parceiros</Link>
+                    <span class="text-slate-400 ml-3">{{ admin?.name }}</span>
+                    <button @click="logout" class="text-slate-500 hover:text-pink-400 ml-2">Sair</button>
+                </nav>
             </div>
         </header>
 

@@ -67,11 +67,33 @@
 | n8n self-hosted | ⬜ |
 | Backups PostgreSQL→MinIO, monitoring | ⬜ |
 
-## Fase 2 (32 módulos) e Roadmap (23) — resumo
-⬜ CRM Pipeline · POS offline · Armazéns/Lotes · Projetos/Timesheet · Helpdesk · DMS+IA ·
-Contratos/Assinatura · BI · Agentes IA/MCP · Kanban · Secretária Virtual IA · Frota GPS ·
-Jitsi · VoIP/GoIP · CCTV NVR · POD · eCommerce/Storefronts · WhatsApp · e-Fatura AGT ·
-Orçamentação · Recrutamento ATS · e-learning · Open Banking · Expansão PALOP
+## Fase 2 — 32 Módulos (3–6 meses) — todos ⬜
+| Módulo | Módulo |
+|---|---|
+| M08 Motor de Workflow | M59+ DMS avançado + IA + Aprovações |
+| M17–M18 Múltiplos métodos + Prestações | M60 Contratos jurídicos |
+| M26 Centros de custo | M62 Compliance RGPD |
+| M28 IRT avançado | M63–M64 Dashboard BI + Relatórios |
+| M29 Demonstrações financeiras | M67 Agentes IA + MCP (18 integrações) |
+| M30 Activos / EAM | M69 Tarefas Kanban |
+| M37 Subsídios & benefícios | M70 Secretária Virtual IA |
+| M42–M43 Encomendas + CRM Pipeline | M71 Frota GPS + MDVR + Combustível |
+| M45 POS Windows Offline | M72–M73 Jitsi (vídeo) + Asterisk/GoIP (VoIP) |
+| M52–M53 Armazéns + Lotes | M74 CCTV NVR + IA |
+| M55–M58 Projectos, Timesheet, Helpdesk | M75 Gestão de Envios + POD |
+| | M76 eCommerce + WooCommerce + Storefront |
+
+## Roadmap — 23 Módulos (6–18 meses) — todos ⬜
+| Módulo | Módulo |
+|---|---|
+| M09 Motor de regras no-code | M48 Omnichannel WhatsApp |
+| M21 E-Fatura AGT (aguarda API) | M54 Logística avançada |
+| M31 Orçamentação | M61 Assinatura digital |
+| M38 Avaliação de desempenho | M65 BI self-service drag-drop |
+| M39 Recrutamento (ATS) | App Mobile iOS/Android |
+| M40 Formação e-learning | Marketplace de módulos 3rd-party |
+| M46 Customer Success | Open Banking Angola |
+| M47 Marketing + Redes Sociais | Expansão PALOP |
 
 ---
 

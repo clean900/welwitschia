@@ -1,6 +1,6 @@
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue';
-import { Head, router } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 
 defineProps({ metrics: Object, byPlan: Array, companies: Array });
 
@@ -60,7 +60,10 @@ function toggle(id) {
                 </thead>
                 <tbody>
                     <tr v-for="c in companies" :key="c.id" class="border-b border-white/5 hover:bg-white/5">
-                        <td class="px-5 py-3 text-slate-100">{{ c.name }} <span class="text-slate-600 font-mono text-xs">{{ c.id }}</span></td>
+                        <td class="px-5 py-3">
+                            <Link :href="`/admin/empresas/${c.id}`" class="text-slate-100 hover:text-emerald-400">{{ c.name }}</Link>
+                            <span class="text-slate-600 font-mono text-xs ml-1">{{ c.id }}</span>
+                        </td>
                         <td class="px-5 py-3 text-slate-400">{{ c.plan }}</td>
                         <td class="px-5 py-3 text-center">
                             <span :class="['text-xs px-2 py-0.5 rounded-full', badge[c.status] || 'bg-slate-600/30 text-slate-300']">{{ label[c.status] || c.status }}</span>

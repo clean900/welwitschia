@@ -7,6 +7,7 @@ use App\Http\Controllers\App\AppOnboardingController;
 use App\Http\Controllers\App\AppPaymentController;
 use App\Http\Controllers\App\AppPayrollController;
 use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\AdminCompanyController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Central\RegisterTenantWebController;
 use App\Http\Controllers\CompanyAuthController;
@@ -88,5 +89,7 @@ Route::prefix('admin')->group(function () {
         Route::post('/logout', [AdminAuthController::class, 'destroy'])->name('admin.logout');
         Route::get('/', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
         Route::post('/empresas/{tenant}/suspender', [AdminDashboardController::class, 'suspend'])->name('admin.companies.suspend');
+        Route::get('/empresas/{tenant}', [AdminCompanyController::class, 'show'])->name('admin.companies.show');
+        Route::post('/empresas/{tenant}/sms', [AdminCompanyController::class, 'activateSms'])->name('admin.companies.sms');
     });
 });

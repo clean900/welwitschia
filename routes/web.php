@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\App\AppInvoiceController;
+use App\Http\Controllers\App\AppOnboardingController;
 use App\Http\Controllers\Central\RegisterTenantWebController;
 use App\Http\Controllers\CompanyAuthController;
 use App\Http\Controllers\Tenant\TenantDashboardController;
@@ -45,4 +46,9 @@ Route::middleware(['auth', 'tenant.account'])->prefix('app')->group(function () 
     Route::post('/invoices/{invoice}/emitir', [AppInvoiceController::class, 'issue'])->name('app.invoices.issue');
     Route::post('/invoices/{invoice}/cancelar', [AppInvoiceController::class, 'cancel'])->name('app.invoices.cancel');
     Route::post('/invoices/{invoice}/cobrar', [AppInvoiceController::class, 'requestPayment'])->name('app.invoices.charge');
+
+    // Configuração / integrações
+    Route::get('/onboarding', [AppOnboardingController::class, 'index'])->name('app.onboarding');
+    Route::post('/onboarding/proxypay', [AppOnboardingController::class, 'saveProxyPay'])->name('app.onboarding.proxypay');
+    Route::post('/onboarding/sms', [AppOnboardingController::class, 'saveSms'])->name('app.onboarding.sms');
 });

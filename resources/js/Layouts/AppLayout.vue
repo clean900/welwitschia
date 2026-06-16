@@ -20,7 +20,7 @@ const nav = [
     { label: 'Contabilidade', icon: 'M5 4h12a2 2 0 012 2v14H7a2 2 0 01-2-2zM9 8h6M9 12h6', enabled: false },
     { label: 'RH & Salários', icon: 'M16 14a4 4 0 10-8 0M4 21a6 6 0 0112 0M18 11a3 3 0 10-2-5', enabled: false },
     { label: 'Relatórios', icon: 'M4 20V10M10 20V4M16 20v-7M21 20H3', enabled: false },
-    { label: 'Definições', icon: 'M12 15a3 3 0 100-6 3 3 0 000 6zM19 12a7 7 0 00-.1-1l2-1.5-2-3.4-2.3 1a7 7 0 00-1.7-1l-.3-2.5H9.4l-.3 2.5a7 7 0 00-1.7 1l-2.3-1-2 3.4L5 11a7 7 0 000 2l-2 1.5 2 3.4 2.3-1a7 7 0 001.7 1l.3 2.5h5.2l.3-2.5a7 7 0 001.7-1l2.3 1 2-3.4-2-1.5a7 7 0 00.1-1z', enabled: false },
+    { label: 'Definições', href: '/app/onboarding', icon: 'M12 15a3 3 0 100-6 3 3 0 000 6zM19 12a7 7 0 00-.1-1l2-1.5-2-3.4-2.3 1a7 7 0 00-1.7-1l-.3-2.5H9.4l-.3 2.5a7 7 0 00-1.7 1l-2.3-1-2 3.4L5 11a7 7 0 000 2l-2 1.5 2 3.4 2.3-1a7 7 0 001.7 1l.3 2.5h5.2l.3-2.5a7 7 0 001.7-1l2.3 1 2-3.4-2-1.5a7 7 0 00.1-1z', enabled: true },
 ];
 
 const isActive = (href) => href === '/app' ? url.value === '/app' : url.value.startsWith(href);

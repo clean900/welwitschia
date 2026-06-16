@@ -63,11 +63,12 @@ const cards = computed(() => [
             <p class="text-slate-500 text-sm">Aqui está o resumo geral da sua empresa.</p>
         </div>
 
-        <div v-if="!onboarding.proxypay || !onboarding.sms" class="mb-6 bg-amber-500/10 border border-amber-500/30 text-amber-300 rounded-xl p-4 text-sm">
+        <Link v-if="!onboarding.proxypay || !onboarding.sms" href="/app/onboarding" class="block mb-6 bg-amber-500/10 border border-amber-500/30 text-amber-300 rounded-xl p-4 text-sm hover:bg-amber-500/15">
             <strong>Conclua a configuração:</strong>
             <span v-if="!onboarding.proxypay"> falta o ProxyPay.</span>
             <span v-if="!onboarding.sms"> falta o SMS.</span>
-        </div>
+            <span class="float-right">→</span>
+        </Link>
 
         <!-- KPI cards -->
         <div class="grid gap-4 md:grid-cols-4 mb-6">

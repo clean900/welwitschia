@@ -6,6 +6,8 @@ use App\Http\Controllers\App\AppInvoiceController;
 use App\Http\Controllers\App\AppOnboardingController;
 use App\Http\Controllers\App\AppPaymentController;
 use App\Http\Controllers\App\AppPayrollController;
+use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Central\RegisterTenantWebController;
 use App\Http\Controllers\CompanyAuthController;
 use App\Http\Controllers\Tenant\TenantDashboardController;
@@ -71,4 +73,20 @@ Route::middleware(['auth', 'tenant.account'])->prefix('app')->group(function () 
     // Contabilidade (PGC)
     Route::get('/contabilidade', [AppAccountingController::class, 'trialBalance'])->name('app.accounting.balance');
     Route::get('/contabilidade/razao', [AppAccountingController::class, 'journal'])->name('app.accounting.journal');
+});
+
+/*
+| Back-office da plataforma (/admin) — staff Welwitschia, guard 'admin'.
+*/
+Route::prefix('admin')->group(function () {
+    Route::middleware('guest:admin')->group(function () {
+        Route::get('/login', [AdminAuthController::class, 'create'])->name('admin.login');
+        Route::post('/login', [AdminAuthController::class, 'store']);
+    });
+
+    Route::middleware('auth:admin')->group(function () {
+        Route::post('/logout', [AdminAuthController::class, 'destroy'])->name('admin.logout');
+        Route::get('/', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+        Route::post('/empresas/{tenant}/suspender', [AdminDashboardController::class, 'suspend'])->name('admin.companies.suspend');
+    });
 });

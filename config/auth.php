@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Membership;
+use App\Models\PlatformAdmin;
 use App\Models\User;
 
 return [
@@ -50,6 +51,12 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        // Staff Welwitschia (back-office /admin).
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'platform_admins',
+        ],
     ],
 
     /*
@@ -74,6 +81,12 @@ return [
         'accounts' => [
             'driver' => 'eloquent',
             'model' => Membership::class,
+        ],
+
+        // Staff Welwitschia (back-office).
+        'platform_admins' => [
+            'driver' => 'eloquent',
+            'model' => PlatformAdmin::class,
         ],
 
         // Utilizadores dentro de cada tenant (RBAC por empresa) — usado internamente.

@@ -17,8 +17,10 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
         ]);
 
-        // Utilizadores já autenticados que abrem /login vão para o workspace.
-        $middleware->redirectUsersTo('/app');
+        // Destino de redireccionamento conforme a área (empresa vs back-office).
+        $isAdmin = fn (\Illuminate\Http\Request $request) => $request->is('admin', 'admin/*');
+        $middleware->redirectUsersTo(fn ($request) => $isAdmin($request) ? '/admin' : '/app');
+        $middleware->redirectGuestsTo(fn ($request) => $isAdmin($request) ? '/admin/login' : route('login'));
 
         $middleware->alias([
             'tenant' => \Stancl\Tenancy\Middleware\InitializeTenancyBySubdomain::class,

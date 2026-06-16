@@ -162,7 +162,7 @@ const cycle = ['Faturação', 'Cobrança', 'Conciliação', 'Contabilização'];
 .hero-img {
     position: absolute;
     inset: 0;
-    background: url('/img/hero.png') no-repeat center 30% / cover;
+    background: url('/img/hero.png') no-repeat center 62% / cover;
     opacity: 0.95;
 }
 .hero-overlay {

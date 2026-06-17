@@ -29,11 +29,11 @@
 | **M14 Reconciliação** | ✅ |
 | M15–M16 Cobrança automática (lembretes D+1/7/15, comprovativos) | ⬜ |
 | M19–M20 Facturação + Numeração AGT | ✅ |
-| M22–M23 Proformas + **PDF** | ⬜ |
+| M22–M23 Proformas + **PDF** | 🟡 (PDF de factura ✅; proformas ⬜) |
 | M24–M25 PGC + Lançamentos | ✅ |
 | M27 IVA (apuramento mensal) | 🟡 (IVA na factura; falta apuramento) |
 | M32–M33 Colaboradores + Salários (IRT/INSS) | ✅ |
-| M34–M36 Presenças + Férias + **Recibos PDF** | 🟡 (recibos no ecrã; falta presenças/férias/PDF) |
+| M34–M36 Presenças + Férias + **Recibos PDF** | 🟡 (recibos no ecrã + **PDF** ✅; falta presenças/férias) |
 | M41 Clientes CRM (NIF, crédito, score) | 🟡 (cliente como texto na factura) |
 | M44 Tabelas de preços | ⬜ |
 | M49–M51 Fornecedores + Compras + Stock | ⬜ |

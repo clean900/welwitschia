@@ -1,0 +1,26 @@
+# n8n — automação de workflows (serviço separado).
+# No servidor (Proxmox/VPS):  docker compose -f docker-compose.n8n.yml up -d
+# Depois, em .env da app:  N8N_WEBHOOK_URL=https://n8n.welwitschia.ao/webhook
+
+services:
+  n8n:
+    image: n8nio/n8n:latest
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_HOST=${N8N_HOST:-n8n.welwitschia.ao}
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=https
+      - WEBHOOK_URL=${N8N_WEBHOOK_PUBLIC_URL:-https://n8n.welwitschia.ao/}
+      - GENERIC_TIMEZONE=Africa/Luanda
+      - TZ=Africa/Luanda
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=${N8N_USER:-admin}
+      - N8N_BASIC_AUTH_PASSWORD=${N8N_PASSWORD:-mudar-isto}
+      - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY:-mudar-esta-chave-32-chars-min}
+    volumes:
+      - n8n_data:/home/node/.n8n
+
+volumes:
+  n8n_data:

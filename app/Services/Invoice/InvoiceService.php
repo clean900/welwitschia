@@ -5,6 +5,7 @@ namespace App\Services\Invoice;
 use App\Events\Invoice\InvoiceIssued;
 use App\Models\AuditLog;
 use App\Models\Invoice;
+use App\Services\Automation\WebhookDispatcher;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -83,6 +84,11 @@ class InvoiceService
         ], Invoice::class, $invoice->id);
 
         InvoiceIssued::dispatch($invoice);
+        WebhookDispatcher::send('invoice.issued', [
+            'number' => $invoice->number,
+            'total' => (float) $invoice->total,
+            'customer' => $invoice->customer_name,
+        ]);
 
         return $invoice;
     }

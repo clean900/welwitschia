@@ -5,6 +5,7 @@ namespace App\Services\Stock;
 use App\Models\Product;
 use App\Models\StockMovement;
 use App\Models\AuditLog;
+use App\Services\Automation\WebhookDispatcher;
 
 /**
  * Movimentos de stock (entradas/saídas) com registo de histórico.
@@ -29,6 +30,14 @@ class StockService
             'quantity' => abs($quantity),
             'balance' => (float) $product->stock_qty,
         ], Product::class, $product->id);
+
+        if ($product->isLowStock()) {
+            WebhookDispatcher::send('stock.low', [
+                'product' => $product->name,
+                'stock' => (float) $product->stock_qty,
+                'min' => (float) $product->min_stock,
+            ]);
+        }
 
         return $movement;
     }

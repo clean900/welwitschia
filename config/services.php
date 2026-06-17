@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    // Automação via n8n (webhooks). Vazio = desligado.
+    'n8n' => [
+        'url' => env('N8N_WEBHOOK_URL'),
+    ],
+
 ];

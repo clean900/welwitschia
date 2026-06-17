@@ -8,6 +8,7 @@ use App\Models\Plan;
 use App\Models\Subscription;
 use App\Models\Tenant;
 use App\Models\User;
+use App\Services\Automation\WebhookDispatcher;
 use Database\Seeders\RolesSeeder;
 use Database\Seeders\Tenant\PgcAngolaSeeder;
 use Illuminate\Support\Facades\Hash;
@@ -93,6 +94,13 @@ class TenantProvisioningService
                 'company' => $data['company_name'],
             ], User::class, $admin->id, $admin->id);
         });
+
+        WebhookDispatcher::send('tenant.created', [
+            'tenant' => $tenant->id,
+            'company' => $tenant->name,
+            'plan' => $plan->slug,
+            'admin_email' => $data['admin_email'],
+        ]);
 
         return $tenant;
     }

@@ -1,0 +1,19 @@
+# Horizon (fila de pagamentos) — systemd.
+# Copiar para /etc/systemd/system/welwitschia-horizon.service
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now welwitschia-horizon
+
+[Unit]
+Description=Welwitschia ERP Horizon
+After=network.target redis-server.service postgresql.service
+
+[Service]
+User=www-data
+Group=www-data
+Restart=always
+RestartSec=3
+ExecStart=/usr/bin/php /var/www/welwitschia/artisan horizon
+WorkingDirectory=/var/www/welwitschia
+
+[Install]
+WantedBy=multi-user.target

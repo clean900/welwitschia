@@ -52,6 +52,7 @@ Route::middleware(['auth', 'tenant.account'])->prefix('app')->group(function () 
     Route::get('/invoices/criar', [AppInvoiceController::class, 'create'])->name('app.invoices.create');
     Route::post('/invoices', [AppInvoiceController::class, 'store'])->name('app.invoices.store');
     Route::get('/invoices/{invoice}', [AppInvoiceController::class, 'show'])->name('app.invoices.show');
+    Route::get('/invoices/{invoice}/pdf', [AppInvoiceController::class, 'pdf'])->name('app.invoices.pdf');
     Route::post('/invoices/{invoice}/emitir', [AppInvoiceController::class, 'issue'])->name('app.invoices.issue');
     Route::post('/invoices/{invoice}/cancelar', [AppInvoiceController::class, 'cancel'])->name('app.invoices.cancel');
     Route::post('/invoices/{invoice}/cobrar', [AppInvoiceController::class, 'requestPayment'])->name('app.invoices.charge');
@@ -69,6 +70,7 @@ Route::middleware(['auth', 'tenant.account'])->prefix('app')->group(function () 
     Route::get('/salarios', [AppPayrollController::class, 'index'])->name('app.payrolls.index');
     Route::post('/salarios', [AppPayrollController::class, 'store'])->name('app.payrolls.store');
     Route::get('/salarios/{payroll}', [AppPayrollController::class, 'show'])->name('app.payrolls.show');
+    Route::get('/recibos/{payslip}/pdf', [AppPayrollController::class, 'payslipPdf'])->name('app.payslips.pdf');
 
     // Cobranças
     Route::get('/cobrancas', [AppPaymentController::class, 'index'])->name('app.payments.index');

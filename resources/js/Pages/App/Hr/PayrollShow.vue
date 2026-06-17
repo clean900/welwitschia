@@ -24,7 +24,7 @@ const MONTHS = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Jul
         <div class="bg-[#121829] border border-white/5 rounded-2xl overflow-hidden">
             <table class="w-full text-sm">
                 <thead class="text-slate-500 text-xs uppercase border-b border-white/5">
-                    <tr><th class="text-left px-5 py-3">Colaborador</th><th class="text-right px-5 py-3">Bruto</th><th class="text-right px-5 py-3">INSS (3%)</th><th class="text-right px-5 py-3">IRT</th><th class="text-right px-5 py-3">Líquido</th></tr>
+                    <tr><th class="text-left px-5 py-3">Colaborador</th><th class="text-right px-5 py-3">Bruto</th><th class="text-right px-5 py-3">INSS (3%)</th><th class="text-right px-5 py-3">IRT</th><th class="text-right px-5 py-3">Líquido</th><th class="px-5 py-3"></th></tr>
                 </thead>
                 <tbody>
                     <tr v-for="(s, i) in payslips" :key="i" class="border-b border-white/5 hover:bg-white/5">
@@ -33,6 +33,7 @@ const MONTHS = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Jul
                         <td class="px-5 py-3 text-right text-slate-400">{{ fmt(s.inss) }}</td>
                         <td class="px-5 py-3 text-right text-slate-400">{{ fmt(s.irt) }}</td>
                         <td class="px-5 py-3 text-right font-semibold text-emerald-400">{{ fmt(s.net) }}</td>
+                        <td class="px-5 py-3 text-right"><a :href="`/app/recibos/${s.id}/pdf`" class="text-emerald-400 hover:underline text-xs">Recibo PDF</a></td>
                     </tr>
                 </tbody>
             </table>

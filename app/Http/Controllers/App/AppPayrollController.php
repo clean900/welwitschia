@@ -5,12 +5,15 @@ namespace App\Http\Controllers\App;
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Models\Payroll;
+use App\Models\Payslip;
 use App\Services\Hr\PayrollService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 class AppPayrollController extends Controller
 {
@@ -58,6 +61,7 @@ class AppPayrollController extends Controller
                 'total_net' => (float) $payroll->total_net,
             ],
             'payslips' => $payroll->payslips()->with('employee')->get()->map(fn ($s) => [
+                'id' => $s->id,
                 'employee' => $s->employee?->name,
                 'gross' => (float) $s->gross,
                 'inss' => (float) $s->inss_employee,
@@ -65,5 +69,19 @@ class AppPayrollController extends Controller
                 'net' => (float) $s->net,
             ]),
         ]);
+    }
+
+    public function payslipPdf(string $payslip): HttpResponse
+    {
+        // Resolução manual em contexto de tenant (evita binding em schema central).
+        $payslip = Payslip::with('employee', 'payroll')->findOrFail($payslip);
+
+        $pdf = Pdf::loadView('pdf.payslip', [
+            'payslip' => $payslip,
+            'payroll' => $payslip->payroll,
+            'company' => ['name' => tenant('name'), 'nif' => tenant('nif')],
+        ]);
+
+        return $pdf->download("recibo-{$payslip->id}.pdf");
     }
 }

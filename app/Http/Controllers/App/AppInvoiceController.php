@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\Invoice;
 use App\Services\Invoice\BillingService;
 use App\Services\Invoice\InvoiceService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 /**
  * Faturação na app web do tenant (/app/invoices).
@@ -89,6 +91,22 @@ class AppInvoiceController extends Controller
         $service->cancel($invoice);
 
         return back()->with('success', 'Factura cancelada.');
+    }
+
+    public function pdf(string $invoice): HttpResponse
+    {
+        // Resolução manual: corre já em contexto de tenant (evita o binding em schema central).
+        $invoice = Invoice::with('items')->findOrFail($invoice);
+
+        $pdf = Pdf::loadView('pdf.invoice', [
+            'invoice' => $invoice,
+            'company' => ['name' => tenant('name'), 'nif' => tenant('nif')],
+            'payment' => $invoice->payment,
+        ]);
+
+        $filename = str_replace([' ', '/'], ['', '-'], $invoice->number) . '.pdf';
+
+        return $pdf->download($filename);
     }
 
     public function requestPayment(Request $request, Invoice $invoice, BillingService $billing): RedirectResponse

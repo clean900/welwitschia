@@ -35,7 +35,11 @@ function charge() {
                 <Link href="/app/invoices" class="text-sm text-slate-500 hover:text-slate-300">← Faturas</Link>
                 <h1 class="text-2xl font-extrabold font-mono mt-1 text-white">{{ invoice.number }}</h1>
             </div>
-            <span :class="['text-xs font-semibold px-3 py-1 rounded-full', badge[invoice.status]]">{{ label[invoice.status] }}</span>
+            <div class="flex items-center gap-3">
+                <a v-if="invoice.status !== 'draft'" :href="`/app/invoices/${invoice.id}/pdf`"
+                    class="text-sm px-3 py-1.5 rounded-lg border border-white/10 text-slate-300 hover:bg-white/5">↓ PDF</a>
+                <span :class="['text-xs font-semibold px-3 py-1 rounded-full', badge[invoice.status]]">{{ label[invoice.status] }}</span>
+            </div>
         </div>
 
         <div class="grid gap-6 md:grid-cols-3">

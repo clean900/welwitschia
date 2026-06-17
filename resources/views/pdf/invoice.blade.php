@@ -75,9 +75,22 @@
     </div>
     @endif
 
+    @if($qr ?? null)
+    <table style="clear:both; margin-top:40px; width:100%;">
+        <tr>
+            <td style="width:130px; vertical-align:top;">
+                <img src="{{ $qr }}" style="width:110px; height:110px;" alt="QR" />
+            </td>
+            <td style="vertical-align:bottom; font-size:10px; color:#555;">
+                @if($hashCode)<div><b>{{ $hashCode }}</b> — Processado por programa certificado n.º {{ $cert }}</div>@endif
+                <div style="color:#999; margin-top:4px;">// Faturação certificada AGT — formato a validar com a especificação oficial</div>
+            </td>
+        </tr>
+    </table>
+    @endif
+
     <div class="foot">
         Documento gerado por Welwitschia ERP · welwitschia.ao
-        <br>// Formato/numeração a validar com consultor fiscal AO
     </div>
 </body>
 </html>

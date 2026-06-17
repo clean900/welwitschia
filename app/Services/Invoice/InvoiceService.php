@@ -78,6 +78,9 @@ class InvoiceService
             'due_at' => now()->addDays(15),
         ]);
 
+        // Assinatura digital encadeada (faturação certificada AGT).
+        app(\App\Services\Agt\InvoiceSigningService::class)->sign($invoice);
+
         AuditLog::record('invoice.issued', [
             'number' => $invoice->number,
             'total' => (float) $invoice->total,

@@ -97,11 +97,15 @@ class AppInvoiceController extends Controller
     {
         // Resolução manual: corre já em contexto de tenant (evita o binding em schema central).
         $invoice = Invoice::with('items')->findOrFail($invoice);
+        $company = ['name' => tenant('name'), 'nif' => tenant('nif')];
 
         $pdf = Pdf::loadView('pdf.invoice', [
             'invoice' => $invoice,
-            'company' => ['name' => tenant('name'), 'nif' => tenant('nif')],
+            'company' => $company,
             'payment' => $invoice->payment,
+            'qr' => $invoice->hash ? app(\App\Services\Agt\AgtQrService::class)->dataUri($invoice, $company) : null,
+            'hashCode' => \App\Services\Agt\InvoiceSigningService::shortCode($invoice->hash),
+            'cert' => config('agt.software_cert'),
         ]);
 
         $filename = str_replace([' ', '/'], ['', '-'], $invoice->number) . '.pdf';

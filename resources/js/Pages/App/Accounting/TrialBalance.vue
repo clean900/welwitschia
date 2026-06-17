@@ -11,7 +11,10 @@ const balanced = Math.abs((props.totals.debit ?? 0) - (props.totals.credit ?? 0)
 <template>
     <Head title="Balancete" />
     <AppLayout>
-        <h1 class="text-2xl font-extrabold text-white mb-2">Contabilidade</h1>
+        <div class="flex items-center justify-between mb-2">
+            <h1 class="text-2xl font-extrabold text-white">Contabilidade</h1>
+            <a href="/app/saft" class="text-sm px-3 py-1.5 rounded-lg border border-white/10 text-slate-300 hover:bg-white/5">↓ SAF-T (AO)</a>
+        </div>
         <div class="flex gap-2 mb-6 text-sm">
             <Link href="/app/contabilidade" class="px-3 py-1.5 rounded-lg bg-emerald-500/15 text-emerald-300 font-medium">Balancete</Link>
             <Link href="/app/contabilidade/razao" class="px-3 py-1.5 rounded-lg text-slate-400 hover:bg-white/5">Razão</Link>

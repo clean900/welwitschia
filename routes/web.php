@@ -3,6 +3,7 @@
 use App\Http\Controllers\App\AppAccountingController;
 use App\Http\Controllers\App\AppCustomerController;
 use App\Http\Controllers\App\AppEmployeeController;
+use App\Http\Controllers\App\AppFiscalController;
 use App\Http\Controllers\App\AppInvoiceController;
 use App\Http\Controllers\App\AppOnboardingController;
 use App\Http\Controllers\App\AppPaymentController;
@@ -113,6 +114,9 @@ Route::middleware(['auth', 'tenant.account'])->prefix('app')->group(function () 
     // Contabilidade (PGC)
     Route::get('/contabilidade', [AppAccountingController::class, 'trialBalance'])->name('app.accounting.balance');
     Route::get('/contabilidade/razao', [AppAccountingController::class, 'journal'])->name('app.accounting.journal');
+
+    // Exportação fiscal SAF-T (AO)
+    Route::get('/saft', [AppFiscalController::class, 'saft'])->name('app.fiscal.saft');
 });
 
 /*

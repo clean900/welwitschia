@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\App\AppAccountingController;
+use App\Http\Controllers\App\AppCustomerController;
 use App\Http\Controllers\App\AppEmployeeController;
 use App\Http\Controllers\App\AppInvoiceController;
 use App\Http\Controllers\App\AppOnboardingController;
@@ -71,6 +72,11 @@ Route::middleware(['auth', 'tenant.account'])->prefix('app')->group(function () 
     Route::post('/salarios', [AppPayrollController::class, 'store'])->name('app.payrolls.store');
     Route::get('/salarios/{payroll}', [AppPayrollController::class, 'show'])->name('app.payrolls.show');
     Route::get('/recibos/{payslip}/pdf', [AppPayrollController::class, 'payslipPdf'])->name('app.payslips.pdf');
+
+    // Clientes (CRM)
+    Route::get('/clientes', [AppCustomerController::class, 'index'])->name('app.customers.index');
+    Route::post('/clientes', [AppCustomerController::class, 'store'])->name('app.customers.store');
+    Route::delete('/clientes/{customer}', [AppCustomerController::class, 'destroy'])->name('app.customers.destroy');
 
     // Cobranças
     Route::get('/cobrancas', [AppPaymentController::class, 'index'])->name('app.payments.index');

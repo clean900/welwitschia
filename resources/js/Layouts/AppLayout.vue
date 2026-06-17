@@ -16,6 +16,7 @@ function logout() {
 const nav = [
     { label: 'Painel', href: '/app', icon: 'M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z', enabled: true },
     { label: 'Faturas', href: '/app/invoices', icon: 'M7 3h8l4 4v14H7zM14 3v5h5M10 13h6M10 17h6', enabled: true },
+    { label: 'Clientes', href: '/app/clientes', icon: 'M16 14a4 4 0 10-8 0M4 21a6 6 0 0112 0M18 11a3 3 0 10-2-5', enabled: true },
     { label: 'Cobranças', href: '/app/cobrancas', icon: 'M2 7h20v10H2zM12 9a3 3 0 100 6 3 3 0 000-6', enabled: true },
     { label: 'Contabilidade', href: '/app/contabilidade', icon: 'M5 4h12a2 2 0 012 2v14H7a2 2 0 01-2-2zM9 8h6M9 12h6', enabled: true },
     { label: 'RH & Salários', href: '/app/colaboradores', icon: 'M16 14a4 4 0 10-8 0M4 21a6 6 0 0112 0M18 11a3 3 0 10-2-5', enabled: true },

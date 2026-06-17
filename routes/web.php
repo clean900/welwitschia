@@ -8,7 +8,9 @@ use App\Http\Controllers\App\AppOnboardingController;
 use App\Http\Controllers\App\AppPaymentController;
 use App\Http\Controllers\App\AppPayrollController;
 use App\Http\Controllers\App\AppProductController;
+use App\Http\Controllers\App\AppPurchaseOrderController;
 use App\Http\Controllers\App\AppSalesOrderController;
+use App\Http\Controllers\App\AppSupplierController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminCompanyController;
 use App\Http\Controllers\Admin\AdminDashboardController;
@@ -87,6 +89,17 @@ Route::middleware(['auth', 'tenant.account'])->prefix('app')->group(function () 
     Route::get('/vendas/{order}', [AppSalesOrderController::class, 'show'])->name('app.sales.show');
     Route::post('/vendas/{order}/confirmar', [AppSalesOrderController::class, 'confirm'])->name('app.sales.confirm');
     Route::post('/vendas/{order}/facturar', [AppSalesOrderController::class, 'invoice'])->name('app.sales.invoice');
+
+    // Compras (ordens de compra) + Fornecedores
+    Route::get('/fornecedores', [AppSupplierController::class, 'index'])->name('app.suppliers.index');
+    Route::post('/fornecedores', [AppSupplierController::class, 'store'])->name('app.suppliers.store');
+    Route::delete('/fornecedores/{supplier}', [AppSupplierController::class, 'destroy'])->name('app.suppliers.destroy');
+    Route::get('/compras', [AppPurchaseOrderController::class, 'index'])->name('app.purchases.index');
+    Route::get('/compras/criar', [AppPurchaseOrderController::class, 'create'])->name('app.purchases.create');
+    Route::post('/compras', [AppPurchaseOrderController::class, 'store'])->name('app.purchases.store');
+    Route::get('/compras/{order}', [AppPurchaseOrderController::class, 'show'])->name('app.purchases.show');
+    Route::post('/compras/{order}/confirmar', [AppPurchaseOrderController::class, 'confirm'])->name('app.purchases.confirm');
+    Route::post('/compras/{order}/receber', [AppPurchaseOrderController::class, 'receive'])->name('app.purchases.receive');
 
     // Produtos / Stock
     Route::get('/produtos', [AppProductController::class, 'index'])->name('app.products.index');

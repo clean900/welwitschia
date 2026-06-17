@@ -40,7 +40,7 @@
 | M44 Tabelas de preços / M27 apuramento IVA | ⬜ |
 | M59 DMS básico | ⬜ |
 | M66 Analytics cobrança (DSO, aging) | 🟡 (painel com KPIs; falta DSO/aging) |
-| M68 n8n (10 workflows) | ⬜ (substituído por listeners+Horizon) |
+| M68 n8n (10 workflows) | 🟡 (app emite eventos via webhook + docker-compose + docs; falta servidor n8n) |
 
 ## SaaS / Backend Admin (plano S5 + S8) — **EM CURSO**
 | Funcionalidade | Estado |

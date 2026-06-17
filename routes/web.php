@@ -7,6 +7,7 @@ use App\Http\Controllers\App\AppInvoiceController;
 use App\Http\Controllers\App\AppOnboardingController;
 use App\Http\Controllers\App\AppPaymentController;
 use App\Http\Controllers\App\AppPayrollController;
+use App\Http\Controllers\App\AppProductController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminCompanyController;
 use App\Http\Controllers\Admin\AdminDashboardController;
@@ -77,6 +78,12 @@ Route::middleware(['auth', 'tenant.account'])->prefix('app')->group(function () 
     Route::get('/clientes', [AppCustomerController::class, 'index'])->name('app.customers.index');
     Route::post('/clientes', [AppCustomerController::class, 'store'])->name('app.customers.store');
     Route::delete('/clientes/{customer}', [AppCustomerController::class, 'destroy'])->name('app.customers.destroy');
+
+    // Produtos / Stock
+    Route::get('/produtos', [AppProductController::class, 'index'])->name('app.products.index');
+    Route::post('/produtos', [AppProductController::class, 'store'])->name('app.products.store');
+    Route::post('/produtos/{product}/movimentar', [AppProductController::class, 'move'])->name('app.products.move');
+    Route::delete('/produtos/{product}', [AppProductController::class, 'destroy'])->name('app.products.destroy');
 
     // Cobranças
     Route::get('/cobrancas', [AppPaymentController::class, 'index'])->name('app.payments.index');

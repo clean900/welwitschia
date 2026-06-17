@@ -34,9 +34,10 @@
 | M27 IVA (apuramento mensal) | 🟡 (IVA na factura; falta apuramento) |
 | M32–M33 Colaboradores + Salários (IRT/INSS) | ✅ |
 | M34–M36 Presenças + Férias + **Recibos PDF** | 🟡 (recibos no ecrã + **PDF** ✅; falta presenças/férias) |
-| M41 Clientes CRM (NIF, crédito, score) | 🟡 (cliente como texto na factura) |
-| M44 Tabelas de preços | ⬜ |
-| M49–M51 Fornecedores + Compras + Stock | ⬜ |
+| **M41 Clientes CRM** (NIF, limite crédito) | ✅ |
+| **M42–M44 Vendas** (encomendas → factura + saída stock) | ✅ (falta tabelas de preços/proformas) |
+| **M49–M51 Fornecedores + Compras + Stock** (ordem → recepção → entrada stock) | ✅ |
+| M44 Tabelas de preços / M27 apuramento IVA | ⬜ |
 | M59 DMS básico | ⬜ |
 | M66 Analytics cobrança (DSO, aging) | 🟡 (painel com KPIs; falta DSO/aging) |
 | M68 n8n (10 workflows) | ⬜ (substituído por listeners+Horizon) |

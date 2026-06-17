@@ -16,6 +16,7 @@ function logout() {
 const nav = [
     { label: 'Painel', href: '/app', icon: 'M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z', enabled: true },
     { label: 'Faturas', href: '/app/invoices', icon: 'M7 3h8l4 4v14H7zM14 3v5h5M10 13h6M10 17h6', enabled: true },
+    { label: 'Vendas', href: '/app/vendas', icon: 'M3 3h2l2 12h11l2-8H6M9 21a1 1 0 100-2 1 1 0 000 2zM17 21a1 1 0 100-2 1 1 0 000 2z', enabled: true },
     { label: 'Clientes', href: '/app/clientes', icon: 'M16 14a4 4 0 10-8 0M4 21a6 6 0 0112 0M18 11a3 3 0 10-2-5', enabled: true },
     { label: 'Stock', href: '/app/produtos', icon: 'M21 8l-9-5-9 5 9 5 9-5zM3 8v8l9 5 9-5V8M12 13v8', enabled: true },
     { label: 'Cobranças', href: '/app/cobrancas', icon: 'M2 7h20v10H2zM12 9a3 3 0 100 6 3 3 0 000-6', enabled: true },

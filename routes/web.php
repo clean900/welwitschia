@@ -8,6 +8,7 @@ use App\Http\Controllers\App\AppOnboardingController;
 use App\Http\Controllers\App\AppPaymentController;
 use App\Http\Controllers\App\AppPayrollController;
 use App\Http\Controllers\App\AppProductController;
+use App\Http\Controllers\App\AppSalesOrderController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminCompanyController;
 use App\Http\Controllers\Admin\AdminDashboardController;
@@ -78,6 +79,14 @@ Route::middleware(['auth', 'tenant.account'])->prefix('app')->group(function () 
     Route::get('/clientes', [AppCustomerController::class, 'index'])->name('app.customers.index');
     Route::post('/clientes', [AppCustomerController::class, 'store'])->name('app.customers.store');
     Route::delete('/clientes/{customer}', [AppCustomerController::class, 'destroy'])->name('app.customers.destroy');
+
+    // Vendas (encomendas)
+    Route::get('/vendas', [AppSalesOrderController::class, 'index'])->name('app.sales.index');
+    Route::get('/vendas/criar', [AppSalesOrderController::class, 'create'])->name('app.sales.create');
+    Route::post('/vendas', [AppSalesOrderController::class, 'store'])->name('app.sales.store');
+    Route::get('/vendas/{order}', [AppSalesOrderController::class, 'show'])->name('app.sales.show');
+    Route::post('/vendas/{order}/confirmar', [AppSalesOrderController::class, 'confirm'])->name('app.sales.confirm');
+    Route::post('/vendas/{order}/facturar', [AppSalesOrderController::class, 'invoice'])->name('app.sales.invoice');
 
     // Produtos / Stock
     Route::get('/produtos', [AppProductController::class, 'index'])->name('app.products.index');

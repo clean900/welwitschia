@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AgtSetting;
 use App\Models\PaymentGateway;
 use App\Models\SmsGateway;
 use App\Models\Tenant;
@@ -24,6 +25,7 @@ class AdminCompanyController extends Controller
         $status = $tenant->run(fn () => [
             'sms' => SmsGateway::where('provider', 'telcosms')->first(),
             'proxypay' => PaymentGateway::where('provider', 'proxypay')->first(),
+            'agt' => AgtSetting::where('active', true)->first(),
         ]);
 
         return Inertia::render('Admin/Company', [
@@ -41,7 +43,32 @@ class AdminCompanyController extends Controller
                 'active' => $status['proxypay']->active,
                 'environment' => $status['proxypay']->environment,
             ] : null,
+            'agt' => $status['agt'] ? [
+                'tax_registration_number' => $status['agt']->tax_registration_number,
+                'establishment_number' => $status['agt']->establishment_number,
+                'active' => $status['agt']->active,
+            ] : null,
         ]);
+    }
+
+    public function saveAgt(Request $request, Tenant $tenant): RedirectResponse
+    {
+        $data = $request->validate([
+            'tax_registration_number' => 'required|string|max:20',
+            'establishment_number' => 'nullable|string|max:10',
+            'private_key' => 'required|string',
+        ]);
+
+        $tenant->run(function () use ($data) {
+            $setting = AgtSetting::firstOrNew([]);
+            $setting->tax_registration_number = $data['tax_registration_number'];
+            $setting->establishment_number = $data['establishment_number'] ?: '001';
+            $setting->private_key = $data['private_key'];
+            $setting->active = true;
+            $setting->save();
+        });
+
+        return back()->with('success', "Emissor AGT configurado para {$tenant->name}.");
     }
 
     public function activateSms(Request $request, Tenant $tenant): RedirectResponse

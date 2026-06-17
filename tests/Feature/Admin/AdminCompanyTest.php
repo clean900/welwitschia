@@ -53,4 +53,24 @@ class AdminCompanyTest extends TenancyTestCase
         $this->assertTrue($gateway->active);
         $this->assertSame('ACME', $gateway->sender_id);
     }
+
+    public function test_admin_configura_emissor_agt(): void
+    {
+        $res = openssl_pkey_new(['private_key_bits' => 2048, 'private_key_type' => OPENSSL_KEYTYPE_RSA]);
+        openssl_pkey_export($res, $pem);
+
+        $this->actingAs($this->admin, 'admin')
+            ->post('/admin/empresas/acme/agt', [
+                'tax_registration_number' => '5000413178',
+                'establishment_number' => '001',
+                'private_key' => $pem,
+            ])->assertRedirect();
+
+        $setting = $this->tenant->run(fn () => \App\Models\AgtSetting::where('active', true)->first());
+        $this->assertNotNull($setting);
+        $this->assertSame('5000413178', $setting->tax_registration_number);
+        // Chave decriptada pelo cast e utilizável (o TrimStrings corta o \n final, irrelevante).
+        $this->assertStringContainsString('BEGIN PRIVATE KEY', $setting->private_key);
+        $this->assertNotFalse(openssl_pkey_get_private($setting->private_key));
+    }
 }

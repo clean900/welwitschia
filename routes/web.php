@@ -134,6 +134,7 @@ Route::prefix('admin')->group(function () {
         Route::post('/empresas/{tenant}/suspender', [AdminDashboardController::class, 'suspend'])->name('admin.companies.suspend');
         Route::get('/empresas/{tenant}', [AdminCompanyController::class, 'show'])->name('admin.companies.show');
         Route::post('/empresas/{tenant}/sms', [AdminCompanyController::class, 'activateSms'])->name('admin.companies.sms');
+        Route::post('/empresas/{tenant}/agt', [AdminCompanyController::class, 'saveAgt'])->name('admin.companies.agt');
 
         // Parceiros da landing
         Route::get('/parceiros', [AdminPartnerController::class, 'index'])->name('admin.partners.index');

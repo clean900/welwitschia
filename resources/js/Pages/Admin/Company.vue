@@ -2,15 +2,23 @@
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
-const props = defineProps({ company: Object, sms: Object, proxypay: Object });
+const props = defineProps({ company: Object, sms: Object, proxypay: Object, agt: Object });
 
 const smsForm = useForm({
     api_key: '',
     sender_id: props.sms?.sender_id ?? '',
 });
+const agtForm = useForm({
+    tax_registration_number: props.agt?.tax_registration_number ?? '',
+    establishment_number: props.agt?.establishment_number ?? '001',
+    private_key: '',
+});
 
 function saveSms() {
     smsForm.post(`/admin/empresas/${props.company.id}/sms`, { onSuccess: () => smsForm.reset('api_key') });
+}
+function saveAgt() {
+    agtForm.post(`/admin/empresas/${props.company.id}/agt`, { onSuccess: () => agtForm.reset('private_key') });
 }
 </script>
 
@@ -62,6 +70,38 @@ function saveSms() {
                     </button>
                 </form>
             </div>
+        </div>
+
+        <!-- AGT (Facturação Eletrónica) -->
+        <div class="bg-[#121829] border border-white/5 rounded-2xl p-6 mt-6">
+            <div class="flex items-center justify-between mb-1">
+                <h2 class="font-bold text-white">AGT — Facturação Eletrónica</h2>
+                <span :class="['text-xs font-semibold px-2.5 py-0.5 rounded-full', agt?.active ? 'bg-emerald-500/20 text-emerald-300' : 'bg-slate-600/30 text-slate-300']">
+                    {{ agt?.active ? 'Activo' : 'Por configurar' }}
+                </span>
+            </div>
+            <p class="text-sm text-slate-400 mb-4">NIF do emissor + chave privada RSA registada na AGT. As facturas emitidas são submetidas à AGT.</p>
+            <form @submit.prevent="saveAgt" class="grid md:grid-cols-3 gap-3">
+                <div>
+                    <label class="block text-sm text-slate-300 mb-1">NIF do emissor</label>
+                    <input v-model="agtForm.tax_registration_number" type="text" class="field" placeholder="5000000000" />
+                    <p v-if="agtForm.errors.tax_registration_number" class="text-sm text-pink-400 mt-1">{{ agtForm.errors.tax_registration_number }}</p>
+                </div>
+                <div>
+                    <label class="block text-sm text-slate-300 mb-1">Estabelecimento</label>
+                    <input v-model="agtForm.establishment_number" type="text" class="field" placeholder="001" />
+                </div>
+                <div class="md:col-span-3">
+                    <label class="block text-sm text-slate-300 mb-1">Chave privada RSA do emissor (PEM)</label>
+                    <textarea v-model="agtForm.private_key" rows="4" class="field font-mono text-xs" placeholder="-----BEGIN PRIVATE KEY-----"></textarea>
+                    <p v-if="agtForm.errors.private_key" class="text-sm text-pink-400 mt-1">{{ agtForm.errors.private_key }}</p>
+                </div>
+                <div class="md:col-span-3 flex justify-end">
+                    <button type="submit" :disabled="agtForm.processing" class="px-6 py-2 rounded-lg bg-gradient-to-r from-pink-500 to-pink-600 text-white font-semibold hover:opacity-90 disabled:opacity-50">
+                        {{ agtForm.processing ? 'A guardar…' : (agt?.active ? 'Reconfigurar emissor' : 'Configurar emissor AGT') }}
+                    </button>
+                </div>
+            </form>
         </div>
     </AdminLayout>
 </template>

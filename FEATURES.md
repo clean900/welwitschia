@@ -1,7 +1,7 @@
 # Welwitschia ERP — Estado vs. Plano Final v4.0
 
 > Mapeado ao **Plano Final & Cronograma v4.0** (77 módulos · 22 MVP · 32 Fase 2 · 23 Roadmap · 14 sprints · 3 gates).
-> Estado em 2026-06-16 · **58 testes automatizados verdes.**
+> Estado em 2026-06-17 · **82 testes automatizados verdes.**
 > Legenda: ✅ feito e testado · 🟡 parcial / backend pronto sem UI · ⬜ por fazer
 
 ---
@@ -10,7 +10,7 @@
 | Gate | Critério | Estado |
 |---|---|---|
 | **Gate 1** (D28) | Ciclo cobrança completo (factura→ProxyPay→SMS→callback→reconciliação→lançamento) | ✅ **alcançado** (lógica + testes; falta credenciais reais) |
-| **Gate 2** (D70) | Os 22 módulos MVP integrados | 🟡 **~14/22** (core financeiro+RH+contab. feitos; faltam vendas/compras/stock) |
+| **Gate 2** (D70) | Os 22 módulos MVP integrados | 🟡 **~19/22** (financeiro, RH, contab., vendas, compras, stock, clientes ✅; faltam preços, apuramento IVA, lembretes) |
 | **Gate 3** (D86) | UAT + sign-off fiscal/laboral + deploy produção | ⬜ (bloqueado por validação fiscal + servidor) |
 
 ## 22 Módulos MVP — estado real
@@ -42,21 +42,21 @@
 | M66 Analytics cobrança (DSO, aging) | 🟡 (painel com KPIs; falta DSO/aging) |
 | M68 n8n (10 workflows) | 🟡 (app emite eventos via webhook + docker-compose + docs; falta servidor n8n) |
 
-## SaaS / Backend Admin (plano S5 + S8) — **EM CURSO**
+## SaaS / Backend Admin (/admin, guard separado) — ✅
 | Funcionalidade | Estado |
 |---|---|
 | Schema landlord (tenants, plans, subscriptions, tenant_modules) | ✅ |
 | Onboarding: registo → tenant criado | ✅ (falta pagar plano via ProxyPay) |
-| **Backend Admin: gerir tenants** | ⬜ (a construir) |
-| **Activar TelcoSMS por tenant (admin)** | ⬜ (a construir) |
-| **Métricas plataforma (MRR, módulos, consumo SMS)** | ⬜ (a construir) |
-| Clientes/parceiros da landing | ⬜ (a construir) |
+| **Backend Admin: gerir empresas** (listar, detalhe, suspender) | ✅ |
+| **Activar TelcoSMS por tenant (admin)** | ✅ |
+| **Métricas plataforma (empresas, MRR, por plano)** | ✅ |
+| **Clientes/parceiros da landing** | ✅ |
 | `ModuleEnabled` middleware (bloqueia módulos inactivos) | ✅ (middleware; falta fluxo de activação) |
 | Cobrança recorrente de subscrições | ⬜ |
 
 ## Frontend (Vue 3) — ecrãs
-✅ Landing · Wizard registo · Login · Painel · Faturas · Cobranças · RH & Salários · Contabilidade · Configuração
-⬜ Relatórios · Vendas · Compras/Stock · Clientes · App mobile
+✅ Landing · Wizard registo · Login · Painel · **Faturas · Vendas · Clientes · Compras · Fornecedores · Stock** · Cobranças · RH & Salários · Contabilidade · Configuração · **Back-office /admin**
+⬜ Relatórios · App mobile
 
 ## Infra & DevOps
 | | Estado |

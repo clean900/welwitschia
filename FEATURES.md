@@ -29,6 +29,7 @@
 | **M14 Reconciliação** | ✅ |
 | M15–M16 Cobrança automática (lembretes D+1/7/15, comprovativos) | ⬜ |
 | M19–M20 Facturação + Numeração AGT | ✅ |
+| **M21 Faturação certificada AGT** (assinatura encadeada + QR + SAF-T) | 🟡 fundação técnica ✅ — formatos a validar c/ spec oficial + registo AGT |
 | M22–M23 Proformas + **PDF** | 🟡 (PDF de factura ✅; proformas ⬜) |
 | M24–M25 PGC + Lançamentos | ✅ |
 | M27 IVA (apuramento mensal) | 🟡 (IVA na factura; falta apuramento) |
